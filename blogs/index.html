@@ -178,7 +178,26 @@
 
         @media (max-width: 600px) {
             .container { padding: 2rem 1.5rem; }
-            .nav-links { display: none; } /* Simplify nav on mobile for minimal look */
+            h1 { font-size: 1.75rem; } /* Keep this for the article page scaling */
+            
+            /* Stack the logo and links vertically on mobile */
+            nav { 
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            /* Display the links side-by-side underneath the logo */
+            .nav-links { 
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1rem;
+            }
+            
+            /* Remove the default left margin so they align properly */
+            .nav-links a { 
+                margin-left: 0; 
+            }
         }
     </style>
 </head>
