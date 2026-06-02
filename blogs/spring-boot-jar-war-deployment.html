@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spring Boot JAR vs WAR Deployment // NAND Gate Labs</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0a0a0c;
+            --grid-color: rgba(0, 255, 102, 0.03);
+            --primary-color: #00ff66;
+            --primary-dim: rgba(0, 255, 102, 0.1);
+            --text-main: #e2e8f0;
+            --text-muted: #94a3b8;
+            --border-color: #1e293b;
+            --code-bg: #111827;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'JetBrains Mono', monospace;
+            line-height: 1.7;
+            background-image: 
+                linear-gradient(to right, var(--grid-color) 1px, transparent 1px),
+                linear-gradient(to bottom, var(--grid-color) 1px, transparent 1px);
+            background-size: 40px 40px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 800px; /* Slightly narrower for optimal reading length */
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4rem;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 1.5rem;
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--primary-color);
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+            margin-left: 1.5rem;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        /* Article Header */
+        .article-header {
+            margin-bottom: 3rem;
+        }
+
+        .article-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+
+        h1 {
+            font-size: 2.2rem;
+            color: #ffffff;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+        }
+
+        .tag-container {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .tag {
+            font-size: 0.75rem;
+            padding: 0.2rem 0.6rem;
+            background: var(--primary-dim);
+            color: var(--primary-color);
+            border: 1px solid rgba(0, 255, 102, 0.2);
+            border-radius: 3px;
+        }
+
+        /* Article Content Typography */
+        article p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        article strong {
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        article ul {
+            margin-bottom: 1.5rem;
+            padding-left: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        article li {
+            margin-bottom: 0.5rem;
+        }
+
+        article li::marker {
+            color: var(--primary-color);
+        }
+
+        /* Code Blocks */
+        pre {
+            background-color: var(--code-bg);
+            border: 1px solid var(--border-color);
+            border-left: 3px solid var(--primary-color);
+            border-radius: 4px;
+            padding: 1.5rem;
+            overflow-x: auto;
+            margin: 2rem 0;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        code {
+            font-family: 'JetBrains Mono', monospace;
+            color: #e2e8f0;
+        }
+
+        /* Inline code */
+        p code {
+            background-color: var(--code-bg);
+            padding: 0.15rem 0.4rem;
+            border-radius: 3px;
+            font-size: 0.85em;
+            color: var(--primary-color);
+            border: 1px solid var(--border-color);
+        }
+
+        blockquote {
+            border-left: 2px solid var(--text-muted);
+            padding-left: 1.5rem;
+            margin: 2rem 0;
+            font-style: italic;
+            color: #cbd5e1;
+        }
+
+        footer {
+            margin-top: 5rem;
+            text-align: center;
+            font-size: 0.75rem;
+            color: rgba(100, 116, 139, 0.6);
+            border-top: 1px solid var(--border-color);
+            padding-top: 2rem;
+        }
+
+        @media (max-width: 600px) {
+            .container { padding: 2rem 1.5rem; }
+            h1 { font-size: 1.75rem; }
+            .nav-links { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <nav>
+            <a href="blog.html" class="logo">cd <span>..</span></a>
+            <div class="nav-links">
+                <a href="blog.html">~/blogs</a>
+                <a href="https://shivamrut.nandgatelabs.com">~/portfolio</a>
+            </div>
+        </nav>
+
+        <article>
+            <header class="article-header">
+                <div class="article-meta">
+                    <span>June 2, 2026</span>
+                    <span>System Architecture</span>
+                </div>
+                <h1>How to Create a Spring Boot Entry File That Supports Both JAR and WAR Deployment</h1>
+                <div class="tag-container">
+                    <span class="tag">Spring Boot</span>
+                    <span class="tag">WAR</span>
+                    <span class="tag">Migration</span>
+                </div>
+            </header>
+
+            <p>When I started working on this migration in the GSoC project, the first thing that looked deceptively simple was the Spring Boot entry class. It is usually just a file with a <code>main()</code> method, but in our case it had a second personality depending on how the system is deployed.</p>
+
+            <p>We were not starting from a clean slate. The system was already running in a shared, central Tomcat server where multiple backend services coexist. Each service is deployed as a WAR. That immediately changes how you think about Spring Boot, because the default mental model (run a JAR, embedded server, everything isolated) no longer applies.</p>
+
+            <p>At the same time, the long-term direction is clear: move away from Apache Thrift based service communication and gradually replace it with modern Spring REST APIs. Eventually, everything should be runnable as independent JARs with embedded servers. But right now, that is not possible. So we are effectively following a strangler fig approach; new parts grow around the old system until the old parts can slowly be removed. That context is exactly why this entry class exists in its current form.</p>
+
+<pre><code>@SpringBootApplication
+public class ConfigurationsApplication extends SpringBootServletInitializer {</code></pre>
+
+            <p>This line looks normal, but it represents two deployment worlds living in the same codebase.</p>
+
+            <p>The <code>@SpringBootApplication</code> annotation is the Spring Boot "activation switch". When Spring sees this, it understands three things at once: this class is a configuration source, it should automatically configure dependencies based on what is present in the classpath, and it should scan the surrounding package structure to discover controllers, services, and repositories.</p>
+
+            <p>Spring Boot decides behavior based on what exists in the classpath, essentially the set of libraries loaded at runtime through Maven dependencies defined in <code>pom.xml</code>. If a dependency exists, Spring Boot assumes a capability and auto-configures it. In simpler terms, this annotation is what allows Spring to behave like an opinionated framework instead of a manually wired configuration system. Without it, we would be writing a lot of explicit bean definitions and XML-style wiring. With it, Spring looks at what libraries exist (web, JPA, etc.) and sets up a working application context automatically.</p>
+
+            <p>But the interesting part starts after that. The class extends <code>SpringBootServletInitializer</code>.</p>
+
+            <p>This is not needed if you only plan to run Spring Boot as a standalone JAR. But in our case, the application is deployed into an external Tomcat server. That means Tomcat is responsible for starting the application, not the <code>main()</code> method. This is a classic enterprise setup where a single server hosts multiple WAR files, and each WAR is just one module inside a larger ecosystem.</p>
+
+            <p>By extending <code>SpringBootServletInitializer</code>, we are essentially telling Spring Boot:</p>
+
+            <blockquote>"If someone starts me inside a servlet container, here is how you should initialize the application context."</blockquote>
+
+            <p>This leads to the overridden method:</p>
+
+<pre><code>@Override
+protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+    return application.sources(ConfigurationsApplication.class);
+}</code></pre>
+
+            <p>This method is only used in WAR deployments. It is part of a controlled startup lifecycle. Instead of Java calling <code>main()</code>, the servlet container calls into Spring Boot through this initializer.</p>
+
+            <p>What happens internally is roughly this flow:<br>
+            <strong>Tomcat starts &rarr; it detects deployed WAR &rarr; it triggers Spring's initializer &rarr; Spring calls configure() &rarr; SpringApplicationBuilder is given the application class &rarr; Spring builds the application context and wires everything.</strong></p>
+
+            <p>So this method is not business logic at all. It is deployment glue. It exists purely to bridge Spring Boot with external servlet containers.</p>
+
+            <p>Now the second entry point exists alongside it:</p>
+
+<pre><code>public static void main(String[] args) {
+    SpringApplication.run(ConfigurationsApplication.class, args);
+}</code></pre>
+
+            <p>This is the classic Spring Boot bootstrap method. If we run this class directly (outside Tomcat), Spring creates an embedded server (usually Tomcat by default), builds the application context, and starts listening for HTTP requests.</p>
+
+            <p>So effectively, this single class supports two runtime modes:</p>
+            <ul>
+                <li><strong>In legacy mode (current system):</strong> Tomcat starts everything and uses <code>configure()</code></li>
+                <li><strong>In modern mode (future direction):</strong> <code>main()</code> starts everything as a standalone JAR</li>
+            </ul>
+
+            <p>This dual behavior is extremely important in a strangler fig migration. It allows us to slowly introduce Spring REST controllers while still living inside the old infrastructure without breaking deployment expectations.</p>
+
+            <p>The annotation <code>@SpringBootApplication</code> quietly supports both worlds. It is what ensures that whether Spring is started by <code>main()</code> or by Tomcat, the same auto-configuration and component scanning rules apply. So controllers written for new REST endpoints behave consistently regardless of deployment model.</p>
+
+            <p>From a design perspective, this entry class sits at the intersection of a few important patterns that become more visible once you work in legacy migration systems.</p>
+
+            <p>One is the <strong>Front Controller</strong> pattern. All incoming HTTP requests, whether for old Thrift-based endpoints or new REST APIs, eventually pass through Spring's <code>DispatcherServlet</code>. All incoming HTTP requests pass through Spring's <code>DispatcherServlet</code>, which acts as the central routing layer. This is why adding REST endpoints does not require touching the servlet infrastructure directly.</p>
+
+            <p>Another is <strong>Inversion of Control</strong>. This entry class does not manually construct services or controllers. Instead, it triggers a system where Spring builds the entire object graph at runtime. The entry class only starts the process; it does not participate in object creation itself.</p>
+
+            <p>The <code>SpringBootServletInitializer</code> part is essentially a <strong>Template Method</strong> pattern implementation. We are overriding a specific hook (<code>configure</code>) while Spring controls the full lifecycle of application startup.</p>
+
+            <p>What makes this setup interesting in our project is that it is transitional by design. We are not choosing between JAR and WAR. We are supporting both simultaneously because the system is mid-migration. The WAR path keeps compatibility with the central Tomcat architecture, while the JAR path is the target end state once the strangler fig migration completes.</p>
+
+            <p>To conclude, this entry class is the boundary between two architectural eras of the system. One rooted in shared infrastructure and legacy service communication, and another moving toward independent, REST-based services. The fact that both can coexist in a single class is what makes gradual migration possible instead of requiring a complete rewrite.</p>
+        </article>
+
+        <footer>
+            &copy; 2026 NAND Gate Labs. System running smoothly.
+        </footer>
+    </div>
+
+</body>
+</html>
