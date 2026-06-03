@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Shivamrut G - Backend Engineer & Open Source Contributor">
     <title>Shivamrut G | Backend Engineer</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -26,6 +27,11 @@
             padding: 0;
         }
 
+        ::selection {
+            background-color: var(--primary-dim);
+            color: var(--primary);
+        }
+
         body {
             background-color: var(--bg-main);
             color: var(--text-main);
@@ -36,6 +42,7 @@
                 linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
                 linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
             background-size: 30px 30px;
+            -webkit-font-smoothing: antialiased;
         }
 
         .container {
@@ -43,6 +50,21 @@
             margin: 0 auto;
             padding: 4rem 2rem;
         }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-up {
+            animation: fadeUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
 
         /* Profile Header */
         header {
@@ -79,15 +101,17 @@
             text-decoration: none;
             font-size: 0.85rem;
             font-weight: 500;
-            transition: opacity 0.2s;
+            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: -0.5rem;
         }
 
         .social-links a:hover {
-            text-decoration: underline;
-            opacity: 0.8;
+            background-color: var(--primary-dim);
         }
 
         /* Section Layouts */
@@ -122,9 +146,14 @@
         .skill-card {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 1.25rem;
             backdrop-filter: blur(4px);
+            transition: border-color 0.3s ease;
+        }
+
+        .skill-card:hover {
+            border-color: var(--border-glow);
         }
 
         .skill-card h3 {
@@ -146,29 +175,52 @@
             border: 1px solid var(--border);
             color: var(--text-muted);
             padding: 0.25rem 0.6rem;
-            border-radius: 3px;
+            border-radius: 4px;
             font-size: 0.75rem;
-            transition: all 0.2s;
+            transition: all 0.2s ease;
+            cursor: default;
         }
 
         .tag:hover {
             border-color: var(--primary);
             color: var(--primary);
             background: var(--primary-dim);
+            transform: translateY(-1px);
         }
 
-        /* Timeline Blocks (Experience / Projects) */
+        /* Timeline Blocks */
         .timeline-item {
             background: var(--bg-card);
             border: 1px solid var(--border);
-            border-radius: 4px;
+            border-radius: 6px;
             padding: 1.75rem;
             margin-bottom: 1rem;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
 
         .timeline-item:hover {
             border-color: var(--border-glow);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Subtle left highlight on hover */
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .timeline-item:hover::before {
+            opacity: 1;
         }
 
         .timeline-header {
@@ -189,15 +241,17 @@
         .company-name {
             color: var(--primary);
             font-size: 0.95rem;
+            margin-top: 0.15rem;
         }
 
         .time-badge {
             font-size: 0.8rem;
             color: var(--text-muted);
             background: rgba(255, 255, 255, 0.02);
-            padding: 0.2rem 0.5rem;
+            padding: 0.25rem 0.6rem;
             border: 1px solid var(--border);
-            border-radius: 3px;
+            border-radius: 4px;
+            font-weight: 500;
         }
 
         .bullet-list {
@@ -230,10 +284,20 @@
             color: var(--text-muted);
         }
 
+        footer a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        
+        footer a:hover {
+            color: var(--primary);
+        }
+
         @media (max-width: 768px) {
-            .container { padding: 2rem 1rem; }
+            .container { padding: 2rem 1.5rem; }
             .timeline-header { flex-direction: column; align-items: flex-start; }
-            .time-badge { margin-top: 0.25rem; }
+            .time-badge { margin-top: 0.5rem; }
             .header-title { font-size: 2rem; }
         }
     </style>
@@ -242,19 +306,19 @@
 
     <div class="container">
         <!-- Main Identity Structure -->
-        <header>
+        <header class="animate-up">
             <div class="header-title">shivamrut<span>.g</span></div>
-            <div class="header-subtitle">Backend Developer // Bangalore, India</div>
+            <div class="header-subtitle">Backend Engineer // Bengaluru, India</div>
             <div class="social-links">
                 <a href="https://github.com/shivamrut" target="_blank">./github</a>
                 <a href="https://www.linkedin.com/in/shivamrut-g-21826124a/" target="_blank">./linkedin</a>
-                <a href="https://nandgatelabs.com">./root_domain</a>
+                <a href="https://nandgatelabs.com" target="_blank">./nandgatelabs</a>
             </div>
         </header>
 
         <!-- Technical Capabilities Block -->
-        <section>
-            <h2>Technical Skills</h2>
+        <section class="animate-up delay-1">
+            <h2>Technical Stack</h2>
             <div class="skills-grid">
                 <div class="skill-card">
                     <h3>Languages</h3>
@@ -262,45 +326,61 @@
                         <span class="tag">Java</span>
                         <span class="tag">Go</span>
                         <span class="tag">C++</span>
-                        <span class="tag">Python</span>
+                        <span class="tag">JavaScript</span>
+                        <span class="tag">SQL</span>
+                        <span class="tag">Bash</span>
                     </div>
                 </div>
                 <div class="skill-card">
-                    <h3>DevOps & Cloud Ecosystem</h3>
+                    <h3>Backend & Frameworks</h3>
+                    <div class="tag-container">
+                        <span class="tag">Spring Boot</span>
+                        <span class="tag">Node.js</span>
+                        <span class="tag">Express</span>
+                        <span class="tag">REST APIs</span>
+                        <span class="tag">gRPC</span>
+                        <span class="tag">WebSockets</span>
+                    </div>
+                </div>
+                <div class="skill-card">
+                    <h3>Infrastructure & Data</h3>
                     <div class="tag-container">
                         <span class="tag">Kubernetes</span>
                         <span class="tag">Docker</span>
-                        <span class="tag">Helm</span>
-                        <span class="tag">GCP</span>
-                        <span class="tag">KEDA</span>
-                        <span class="tag">Istio</span>
-                    </div>
-                </div>
-                <div class="skill-card">
-                    <h3>Data, Messaging & APIs</h3>
-                    <div class="tag-container">
                         <span class="tag">Kafka</span>
                         <span class="tag">Redis</span>
-                        <span class="tag">Elasticsearch</span>
                         <span class="tag">PostgreSQL</span>
-                        <span class="tag">gRPC</span>
-                        <span class="tag">WebSockets</span>
+                        <span class="tag">Elasticsearch</span>
+                        <span class="tag">GCP</span>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Core Professional Timeline -->
-        <section>
+        <section class="animate-up delay-2">
             <h2>Engineering Experience</h2>
 
             <div class="timeline-item">
                 <div class="timeline-header">
                     <div>
-                        <div class="role-title">SDE Intern</div>
-                        <div class="company-name">Ruckus Networks – CommScope</div>
+                        <div class="role-title">Incoming Associate Software Engineer</div>
+                        <div class="company-name">New Relic</div>
                     </div>
-                    <div class="time-badge">Jul 2025 – Present</div>
+                    <div class="time-badge">Upcoming</div>
+                </div>
+                <ul class="bullet-list">
+                    <li>Accepted return offer to join the engineering team full-time focusing on backend systems and observability platforms.</li>
+                </ul>
+            </div>
+
+            <div class="timeline-item">
+                <div class="timeline-header">
+                    <div>
+                        <div class="role-title">Software Development Engineer Intern</div>
+                        <div class="company-name">Ruckus Networks (CommScope)</div>
+                    </div>
+                    <div class="time-badge">Jul 2025 – May 2026</div>
                 </div>
                 <ul class="bullet-list">
                     <li>Analyzed GCP Kubernetes workloads and built a Spot VM proof-of-concept projecting ~58% compute cost savings to guide migration strategy.</li>
@@ -320,40 +400,44 @@
                 </div>
                 <ul class="bullet-list">
                     <li>Built a hospital nurse monitoring system (Go, React, PostgreSQL) to digitize Uroflow and IV tracking with secure RBAC, 22+ normalized tables, structured logging with rotation, and reusable React components.</li>
-                    <li>eveloped a React interface and JWT-authenticated API (with refresh tokens) for ambulance live streams using Ant Media, enabling secure remote monitoring by medical staff.</li>
-                    <li>Engineered a WebSocket-based CCTV stream manager: multithreaded Python clients on embedded IoT devices convert RTSP to RTMP and publish to Ant Media Cloud, managed via Flask REST API for command/control; Dockerized and deployed via CI/CD.</li>
+                    <li>Developed a React interface and JWT-authenticated API (with refresh tokens) for ambulance live streams using Ant Media, enabling secure remote monitoring by medical staff.</li>
+                    <li>Engineered a WebSocket-based CCTV stream manager: multithreaded Python clients on embedded IoT devices convert RTSP to RTMP and publish to Ant Media Cloud, managed via Flask REST API. Dockerized and deployed via CI/CD.</li>
                 </ul>
             </div>
         </section>
 
-        <!-- Open Source Matrix -->
-        <section>
-            <h2>Open Source & Communities</h2>
+        <!-- Open Source & Community -->
+        <section class="animate-up delay-3">
+            <h2>Open Source & Community</h2>
+            
             <div class="timeline-item">
                 <div class="timeline-header">
                     <div>
-                        <div class="role-title">GSoC Contributor // Microservice Migration</div>
-                        <div class="company-name">Eclipse SW360</div>
+                        <div class="role-title">Google Summer of Code 2026 (Accepted)</div>
+                        <div class="company-name">Eclipse SW360 // Java, Spring Boot, gRPC</div>
                     </div>
                     <div class="time-badge">2026</div>
                 </div>
                 <ul class="bullet-list">
-                    <li>Refactored modular frameworks from unified legacy formats into distinct, independent REST and gRPC microservice components.</li>
-                    <li>Merged structural fixes optimizing security validations, dependency injections, and thread synchronization layers.</li>
+                    <li>Architecting the migration of 20+ Spring modules, removing legacy Apache Thrift and monolithic Tomcat WAR deployments in favor of independent REST and gRPC microservices.</li>
+                    <li>Found major security issue.</li>
+                    <li>Actively contributing in the community by resolving CouchDB concurrency conflicts, NPE bugs, and security validation issues, while refactoring legacy code to constructor injection and implementing Swagger API documentation.</li>
                 </ul>
             </div>
+
+           
         </section>
 
         <!-- Selected Architectures -->
-        <section>
-            <h2>Systems Architecture Projects</h2>
+        <!-- <section class="animate-up delay-3">
+            <h2>Systems Architecture</h2>
 
             <div class="timeline-item">
                 <div class="timeline-header">
                     <div class="role-title">Event-Driven Tenant Audit System</div>
                     <div class="time-badge">Spring Boot, Kafka, Elasticsearch, Redis</div>
                 </div>
-                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.5rem;">
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;">
                     Designed a distributed decoupled auditing application where database mutations emit localized pipeline events via Kafka brokers.
                 </p>
                 <ul class="bullet-list">
@@ -361,22 +445,24 @@
                     <li>Configured dynamic operational caching models utilizing Redis to heavily mitigate primary storage access load.</li>
                 </ul>
             </div>
-        </section>
+        </section> -->
 
         <!-- Educational Baseline -->
-        <section>
+        <section class="animate-up delay-3">
             <h2>Education</h2>
-            <div class="timeline-item" style="padding: 1.25rem;">
-                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; font-size: 0.9rem;">
-                    <div><strong>B.Tech, Computer Science and Engineering</strong></div>
+            <div class="timeline-item" style="padding: 1.5rem;">
+                <div style="display: flex; justify-content: space-between; flex-wrap: wrap; align-items: center;">
+                    <div>
+                        <div class="role-title" style="font-size: 1rem;">B.Tech, Computer Science and Engineering</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem;">University Visvesvaraya College of Engineering (UVCE)</div>
+                    </div>
                     <div class="time-badge">Graduation: 2026</div>
                 </div>
-                <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">University Visvesvaraya College of Engineering</div>
             </div>
         </section>
 
-        <footer>
-            // Managed and served securely at shivamrut.nandgatelabs.com via Vercel.
+        <footer class="animate-up delay-3">
+            // Built by Shivamrut G. Managed and served securely at <a href="https://shivamrut.nandgatelabs.com" target="_blank">shivamrut.nandgatelabs.com</a> via Vercel.
         </footer>
     </div>
 
